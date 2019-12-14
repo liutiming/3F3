@@ -11,6 +11,10 @@ def n_pdf(x, mu=0., sigma=1.):  # normal pdf - does this function need to be ins
     return y
 
 
+def u_pdf(a, b):
+    return 1/(b - a)
+
+
 def integ(f, a, b, dx=0.01):
     """Retuns a trapezium rule approximation of an integral"""
     tot = 0
@@ -21,33 +25,28 @@ def integ(f, a, b, dx=0.01):
 
 # print(integ(n_pdf,0.,1)*1000/n_pdf(0.5))
 
-dist = 'n'
+dist = 'u'
 
 if dist == 'n':
     # Plot normal distribution
     bins = 30
     x_range = 10
-    max_count = 1000
-    x_rand = np.random.randn(max_count)
-    x_lin = np.linspace(-(x_range / 2), x_range / 2, max_count)
+    N = 1000
+    x_rand = np.random.randn(N)
+    x_lin = np.linspace(-(x_range / 2), x_range / 2, N)
 
-    fig, ax1 = plt.subplots()
-    color = 'tab:blue'
-    ax1.hist(x_rand, bins=bins, color=color)
-    ax1.set_xlabel('x')
-    ax1.set_ylabel('count')
-    ax2 = ax1.twinx()
-    color = 'tab:orange'
-    ax2.plot(x_lin, n_pdf(x_lin), color=color)  # Only approximate scaling
-    ax2.set_ylabel('p')
+    plt.hist(x_rand, bins=bins, color='blue', density=True)
+    plt.xlabel('x')
+    plt.ylabel('count')
+    plt.plot(x_lin, n_pdf(x_lin), color='red')  # Only approximate scaling
     plt.show()
 
 elif dist == 'u':
     # Plot uniform distribution
     bins = 20
     x_rand = np.random.rand(1000)
-    plt.hist(x_rand, bins=bins)
-    plt.plot([0, 1], [1000 / bins, 1000 / bins])  # Scaled to match data exactly
+    plt.hist(x_rand, bins=bins, color='blue', density=True)
+    plt.plot([0, 1], [u_pdf(0, 1), u_pdf(0, 1)], color='red')  # Scaled to match data exactly
     plt.xlabel('x')
     plt.ylabel('count')
     plt.show()
