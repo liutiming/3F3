@@ -1,31 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+from pdfs import n_pdf, u_pdf
+from smoothing_kernel import ksdensity
 
 
-def n_pdf(x, mu=0., sigma=1.):  # normal pdf - does this function need to be inside ksd?
-    """Returns a value y corresponding to the value of the normal distribution at input x"""
-    u = (x - mu) / abs(sigma)
-    y = (1 / (np.sqrt(2 * np.pi) * abs(sigma)))
-    y *= np.exp(-u * u / 2)
-    return y
+dist = 'n'
+smoothed = False
+width = 0.1
 
 
-def u_pdf(a, b):
-    return 1/(b - a)
+def uniform_plot(a, b):
+    p = u_pdf(a, b)
+    range = b - a
+    plt.plot([a, b], [p, p], color='darkorange', ls='--')
+    plt.plot([a - range / 4, a], [0, 0], color='darkorange', ls='--')
+    plt.plot([b, b + range / 4], [0, 0], color='darkorange', ls='--')
+    plt.plot([a, a], [0, p], color='darkorange', ls='--')
+    plt.plot([b, b], [0, p], color='darkorange', ls='--')
 
 
-def integ(f, a, b, dx=0.01):
-    """Retuns a trapezium rule approximation of an integral"""
-    tot = 0
-    for i in np.arange(a, b, dx):
-        tot += f(i) * dx
-    return tot
+def normal_plot(x_axis):
+    plt.plot(x_axis, n_pdf(x_axis), color='darkorange', ls='--')
 
-
-# print(integ(n_pdf,0.,1)*1000/n_pdf(0.5))
-
-dist = 'u'
 
 if dist == 'n':
     # Plot normal distribution
@@ -34,19 +30,35 @@ if dist == 'n':
     N = 1000
     x_rand = np.random.randn(N)
     x_lin = np.linspace(-(x_range / 2), x_range / 2, N)
-
-    plt.hist(x_rand, bins=bins, color='blue', density=True)
-    plt.xlabel('x')
-    plt.ylabel('count')
-    plt.plot(x_lin, n_pdf(x_lin), color='red')  # Only approximate scaling
-    plt.show()
+    if smoothed:
+        ks_density = ksdensity(x_rand, width=width)
+        plt.plot(x_lin, ks_density(x_lin), color='cornflowerblue')
+        img_name = 'smoothed_normal.png'
+    else:
+        plt.hist(x_rand, bins=bins, color='cornflowerblue', density=True)
+        img_name = 'normal_comparison.png'
+    normal_plot(x_lin)
 
 elif dist == 'u':
     # Plot uniform distribution
+    a = 0
+    b = 1
+    p = u_pdf(a, b)
     bins = 20
-    x_rand = np.random.rand(1000)
-    plt.hist(x_rand, bins=bins, color='blue', density=True)
-    plt.plot([0, 1], [u_pdf(0, 1), u_pdf(0, 1)], color='red')  # Scaled to match data exactly
-    plt.xlabel('x')
-    plt.ylabel('count')
-    plt.show()
+    N = 1000
+    x_rand = np.random.rand(N)
+    x_lin = np.linspace(-0.5, 1.5, N)
+    if smoothed:
+        ks_density = ksdensity(x_rand, width=width)
+        plt.plot(x_lin, ks_density(x_lin), color='cornflowerblue')
+        img_name = 'smoothed_uniform.png'
+    else:
+        plt.hist(x_rand, bins=bins, color='cornflowerblue', density=True)
+        img_name = 'uniform_comparison.png'
+    uniform_plot(a, b)
+    # normal_plot(x_lin)
+
+plt.xlabel('x')
+plt.ylabel('Normalised Count')
+plt.savefig('C:\\Users\\obarn\\Google Drive\\Cambridge\\Part IIA\\3F3\\assets\\' + img_name)
+plt.show()

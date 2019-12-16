@@ -32,7 +32,8 @@ fig2, ax2 = plt.subplots(2)
 x = np.random.rand(1000)
 ax2[0].hist(x, bins=20)
 
-ks_density = ksdensity(x, width=0.2)
+ks_density = ksdensity(x, width=0.1)
 x_values = np.linspace(-1., 2., 100)
 ax2[1].plot(x_values, ks_density(x_values))
 
+plt.show()
