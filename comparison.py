@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from pdfs import n_pdf, u_pdf
-from smoothing_kernel import ksdensity
+from smoothing import ksdensity
 
 
-dist = 'n'
-smoothed = False
-width = 0.1
+dist = 'u'
+smoothed = True
+width = 0.4
 
 
 def uniform_plot(a, b):
@@ -32,7 +32,7 @@ if dist == 'n':
     x_lin = np.linspace(-(x_range / 2), x_range / 2, N)
     if smoothed:
         ks_density = ksdensity(x_rand, width=width)
-        plt.plot(x_lin, ks_density(x_lin), color='cornflowerblue')
+        plt.plot(x_lin, ks_density(x_lin)/width, color='cornflowerblue')
         img_name = 'smoothed_normal.png'
     else:
         plt.hist(x_rand, bins=bins, color='cornflowerblue', density=True)
@@ -50,7 +50,7 @@ elif dist == 'u':
     x_lin = np.linspace(-0.5, 1.5, N)
     if smoothed:
         ks_density = ksdensity(x_rand, width=width)
-        plt.plot(x_lin, ks_density(x_lin), color='cornflowerblue')
+        plt.plot(x_lin, ks_density(x_lin)/width, color='cornflowerblue')
         img_name = 'smoothed_uniform.png'
     else:
         plt.hist(x_rand, bins=bins, color='cornflowerblue', density=True)
