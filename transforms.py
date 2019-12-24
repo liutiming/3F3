@@ -1,4 +1,4 @@
-def transform1(a, b):
+def t1(a, b):
     """y = ax + b"""
     def f(x):
         return a*x + b

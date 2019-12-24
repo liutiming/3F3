@@ -12,9 +12,8 @@ img_name = 'smoothed_normal.png'
 
 if dist == 'n':
     # Plot normal distribution
-    x_range = 10
     x_rand = np.random.randn(N)
-    x_lin = np.linspace(-(x_range / 2), x_range / 2, N)
+    x_lin = np.linspace(-5, 5, N)
     ks_density = ksdensity(x_rand, width=width)
     plt.plot(x_lin, ks_density(x_lin), color='cornflowerblue', label='Smoothed Approximation')
     plt.plot(x_lin, n_pdf(x_lin), color='darkorange', ls='--', label='Exact Normal Dist.') # normal plot

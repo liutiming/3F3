@@ -9,9 +9,8 @@ img_name = 'uniform.png'
 
 if dist == 'n':
     # Plot normal distribution
-    x_range = 10
     x_rand = np.random.randn(N)
-    x_lin = np.linspace(-(x_range / 2), x_range / 2, N)
+    x_lin = np.linspace(-5, 5, N)
     plt.hist(x_rand, bins=J, color='cornflowerblue', density=True, label='Histogram Approximation')
     plt.plot(x_lin, n_pdf(x_lin), color='darkorange', ls='--', label='Exact Normal Dist.') # normal plot
     plt.legend()
