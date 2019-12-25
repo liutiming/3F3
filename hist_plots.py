@@ -13,7 +13,6 @@ if dist == 'n':
     x_lin = np.linspace(-5, 5, N)
     plt.hist(x_rand, bins=J, color='cornflowerblue', density=True, label='Histogram Approximation')
     plt.plot(x_lin, n_pdf(x_lin), color='darkorange', ls='--', label='Exact Normal Dist.') # normal plot
-    plt.legend()
 
 elif dist == 'u':
     # Plot uniform distribution
@@ -30,8 +29,8 @@ elif dist == 'u':
     plt.plot([a, a], [0, p], color='darkorange', ls='--')
     plt.plot([b, b], [0, p], color='darkorange', ls='--')
     #plt.plot(x_lin, n_pdf(x_lin), color='red', ls='--') # normal plot
-    plt.legend()
 
+plt.legend()
 plt.xlabel('x')
 plt.ylabel('Normalised Count')
 plt.savefig('C:\\Users\\obarn\\Google Drive\\Cambridge\\Part IIA\\3F3\\assets\\' + img_name)
